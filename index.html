@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Wreck Mountain</title>
+  <script type="module" crossorigin src="./assets/index-XgSjTh_e.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CM_2wSGA.css">
+</head>
+<body>
+  <canvas id="tela"></canvas>
+  <div id="hud" hidden>
+    <div id="dinheiro"><span class="moeda">$</span><span id="dinheiro-valor">0</span></div>
+    <div id="progresso">
+      <div id="distancia"><span id="distancia-valor">0</span><small>m</small></div>
+      <div id="relogio"><span id="relogio-valor">0:00.00</span><small id="relogio-melhor"></small></div>
+      <div id="posicao" hidden></div>
+      <div id="barra-progresso"><div id="barra-progresso-cheia"></div><div id="marca-recorde"></div></div>
+    </div>
+    <div id="medidores">
+      <div class="medidor" id="medidor-combustivel"><span class="rotulo" data-t="combustivel"></span><div class="trilho"><div class="cheio"></div></div></div>
+      <div class="medidor" id="medidor-turbo"><span class="rotulo" data-t="turbo"></span><div class="trilho"><div class="cheio"></div></div></div>
+    </div>
+    <div id="dica"></div>
+    <div id="combo"><span id="pontos-valor">0</span><small data-t="pontos"></small><b id="combo-mult">x1</b><i id="combo-tempo" hidden><u></u></i></div>
+    <div id="avisos-combo"><div class="aviso-combo"></div><div class="aviso-combo"></div></div>
+    <div id="turbo-cheio" data-t="turboCheio"></div>
+    <div id="largada" hidden></div>
+    <div id="titulo-trecho"></div>
+    <div id="faixa-momento"></div>
+    <div id="empinada-ao-vivo" hidden></div>
+    <button id="botao-pausa" class="botao-hud" aria-label="pause"><svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
+    <button id="botao-reiniciar" class="botao-hud" aria-label="restart"><svg viewBox="0 0 24 24"><path d="M12 5V1.5L6.5 7 12 12.5V9a5 5 0 1 1-4.9 6H4.6A7.5 7.5 0 1 0 12 5z"/></svg></button>
+    <button id="botao-finalizar" class="botao-hud botao-finalizar" hidden></button>
+  </div>
+  <div id="flutuantes"></div>
+  <div id="pedais">
+    <button id="pedal-freio" class="pedal" aria-label="brake"><svg viewBox="0 0 24 24"><path d="M16 4 L6 12 L16 20 Z"/></svg></button>
+    <button id="pedal-turbo" class="pedal pedal-turbo" aria-label="boost"><svg viewBox="0 0 24 24"><path d="M13 2 L4 14 H11 L10 22 L20 9 H13 Z"/></svg></button>
+    <button id="pedal-gas" class="pedal pedal-gas" aria-label="gas"><svg viewBox="0 0 24 24"><path d="M8 4 L18 12 L8 20 Z"/></svg></button>
+  </div>
+  <div id="resultado" hidden>
+    <div class="cartao">
+      <h1 id="resultado-titulo"></h1>
+      <div class="total total-topo"><span data-t="total"></span><strong id="resultado-total">$0</strong></div>
+      <div id="resultado-destaque" class="destaque-corrida" hidden></div>
+      <div id="resultado-linhas" class="linhas-resultado"></div>
+      <button id="resultado-detalhes" class="ver-detalhes" type="button" hidden></button>
+      <div id="resultado-categorias" class="linhas-resultado categorias" hidden></div>
+      <div class="banco"><span data-t="banco"></span><strong id="resultado-banco">$0</strong></div>
+      <div id="resultado-chamada" class="chamada" data-t="chamadaGaragem" hidden></div>
+      <button id="resultado-amanha" class="amanha" hidden></button>
+      <button id="botao-garagem-resultado" class="botao botao-secundario" hidden></button>
+      <div class="acoes-resultado">
+        <button id="botao-denovo" class="botao"></button>
+        <button id="botao-dobrar" class="botao botao-anuncio" hidden></button>
+      </div>
+    </div>
+  </div>
+  <div id="pausa" hidden>
+    <div class="cartao cartao-pausa">
+      <h1 data-t="pausa"></h1>
+      <button id="pausa-continuar" class="botao" data-t="continuarJogo"></button>
+      <button id="pausa-recomecar" class="botao botao-secundario" data-t="recomecar"></button>
+      <button id="pausa-garagem" class="botao botao-secundario" data-t="irGaragem"></button>
+      <div class="opcoes">
+        <button id="opcao-som" class="opcao"></button>
+        <button id="opcao-qualidade" class="opcao"></button>
+      </div>
+    </div>
+  </div>
+  <div id="garagem" hidden>
+    <div class="painel-garagem">
+      <div class="topo-garagem">
+        <h2 data-t="garagem"></h2>
+        <div id="garagem-estrelas" class="estrelas-garagem"></div>
+        <div id="garagem-banco" class="banco-garagem">$0</div>
+      </div>
+      <div id="garagem-patente" class="patente"></div>
+      <div id="garagem-aviso" class="aviso" hidden></div>
+      <div id="garagem-metas" class="metas">
+        <button data-meta="missoes"><svg viewBox="0 0 24 24"><path d="M6 2h12v20H6zM9 6h6v2H9zm0 4h6v2H9zm0 4h4v2H9z"/></svg><span></span><i class="selo" hidden></i></button>
+        <button data-meta="premio"><svg viewBox="0 0 24 24"><path d="M3 8h18v4H3zM5 12h14v10H5zM11 8h2v14h-2zM12 8C9 8 6 3 9 3s3 5 3 5 0-5 3-5 0 5-3 5z"/></svg><span></span><i class="selo" hidden></i></button>
+        <button data-meta="ajudantes"><svg viewBox="0 0 24 24"><path d="M5 8h14v10H5zM9 4h6v4H9zM8 11h2v2H8zm6 0h2v2h-2zM9 15h6v1H9zM2 11h3v4H2zm17 0h3v4h-3z"/></svg><span></span><i class="selo" hidden></i></button>
+        <button data-meta="oficina"><svg viewBox="0 0 24 24"><path d="M21 7l-4 4-3-3 4-4a6 6 0 00-8 7L3 18l3 3 7-7a6 6 0 008-7z"/></svg><span></span><i class="selo" hidden></i></button>
+      </div>
+      <div id="garagem-abas-topo" class="abas-garagem">
+        <button data-aba="pistas"></button><button data-aba="melhorias"></button><button data-aba="veiculo"></button>
+      </div>
+      <div id="previa-veiculo-wrap" class="previa-veiculo-wrap" hidden>
+        <canvas id="previa-veiculo"></canvas>
+        <span class="previa-dica" data-t="arrasteGirar"></span>
+      </div>
+      <div id="garagem-conteudo" class="conteudo-garagem"></div>
+      <button id="faixa-oficina" class="faixa-oficina" hidden></button>
+      <button id="botao-descer" class="botao botao-descer"></button>
+      <div id="painel-meta" class="painel-meta" hidden>
+        <div class="topo-meta"><h3 id="painel-meta-titulo"></h3><button id="painel-meta-fechar" class="fechar-meta" aria-label="close">✕</button></div>
+        <div id="painel-meta-conteudo" class="conteudo-meta"></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
